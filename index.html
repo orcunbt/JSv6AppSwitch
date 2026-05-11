@@ -1,0 +1,741 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  
+
+<head>
+      <title>JavaScriptSDK V6</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <link rel="stylesheet" type="text/css" href="stylesheet.css">
+
+
+</head>
+<body>
+
+<blockquote><blockquote>
+<div class="main">
+<br><br>
+<!-- HTML block here -->
+
+
+<blockquote>
+    <h2>Demo: JavaScriptSDK V6</h2>
+    <br><br>
+    <h3>Standard PayPal Buttons</h3>
+    <paypal-button id="paypal-button" type="buynow" class="buttonsV6"></paypal-button>
+    <br>
+    <paypal-button id="paypal-XO-button" type="checkout" class="buttonsV6"></paypal-button>
+    <br>
+
+    <h3>PayPal Guest Payments - Cards</h3>
+    <paypal-basic-card-container>
+        <paypal-basic-card-button id="paypal-basic-card-button" class="buttonsV6">
+    </paypal-basic-card-button>
+    </paypal-basic-card-container>
+    <br><br>
+    <h3>Vault Use cases:</h3>
+    <p class="text"> Vault with Purchase:<br>
+    <paypal-button id="paypal-subscribe" type="subscribe" class="buttonsV6"  ></paypal-button>
+    <br> Vault Only:<br>
+    <paypal-button id="paypal-vault" type="subscribe" class="buttonsV6" ></paypal-button>
+    <br><br>
+    <h3>Pay Later</h3>
+    <paypal-pay-later-button
+        id="paylater-button"
+        hidden
+        class="buttonsV6"
+      ></paypal-pay-later-button>
+    </p >
+    <br><br>
+       <h3>Pay Later Messaging</h3>
+    <br>
+
+    <paypal-message
+          id="paypal-message"
+          auto-bootstrap
+          amount="50"
+          currency-code="EUR"
+          quantityValue="1"
+        ></paypal-message>
+    <br>
+
+    <p class="text">
+      Amount: €<span id="total-amount">50</span>, Quantity:
+      <span id="quantity">1</span>
+    <br>
+        <fieldset>
+          <legend style="font-family:verdana">Update the quantity of the items to adjust the amount</legend>
+          <input type="number" id="quantity-input" value="1" />
+        </fieldset>
+    </p>
+    
+    <br><br>
+    <h3>Card Processing via PayPal Card Fields</h3>
+    <br>
+      <div class="card-fields-container">
+      <div class="card-field" id="paypal-card-fields-number"></div>
+      <div class="card-field" id="paypal-card-fields-expiry"></div>
+      <div class="card-field" id="paypal-card-fields-cvv"></div>
+      <br>
+      <button id="pay-button" class="button-43">Pay by Card</button>
+      <!-- <label>
+  			<input type='checkbox' id='vault' name='vault' /> <font color="green" face="verdana" size="3"> Vault my card </font>
+  		</label> -->
+    <br><br>
+    
+    
+          <h3>Test Cards: </h3>
+        <p class="smallText">
+          Visa: 4000000000001091<br />
+          Mastercard: 5200000000001096<br />
+          Amex: 340000000001098<br /><br />
+
+      <!-- <a href="https://developer.paypal.com/braintree/docs/guides/3d-secure/testing-go-live/ruby" target="_blank">Other test cards</a>
+      <br /> -->
+      </p>
+    <br><br>
+
+   <!-- <h3>Google Pay</h3>
+      <div class="buttons-container">
+      <div id="googlepay-button-container"></div>
+    </div>
+
+    <script src="https://pay.google.com/gp/p/js/pay.js"></script> -->
+
+
+
+
+
+</blockquote>
+
+</div>
+
+
+
+    <script
+      async
+      src="https://www.sandbox.paypal.com/web-sdk/v6/core"
+      onload="onPayPalWebSdkLoaded()"
+    ></script>
+
+
+  </body>
+</html>
+
+
+<script>
+
+async function onPayPalWebSdkLoaded() {
+  try {
+    const clientToken = "eyJraWQiOiJjMDg0YjA0NDQwMjE0YzFkYTQ1ZDgwNDE1YjJlZmI5MiIsInR5cCI6IkpXVCIsImFsZyI6IkVTMjU2In0.eyJpc3MiOiJodHRwczovL2FwaS5zYW5kYm94LnBheXBhbC5jb20iLCJhdWQiOlsiaHR0cHM6Ly9hcGkuYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJsb2NhbGhvc3QucGF5cGFsLmNvbSJdLCJzdWIiOiJXOEVLNjNKS0w4QVFVIiwiYWNyIjpbImNsaWVudCJdLCJzY29wZSI6WyJCcmFpbnRyZWU6VmF1bHQiXSwib3B0aW9ucyI6e30sImF6IjoiY2NnMTguc2xjIiwiZXh0ZXJuYWxfaWQiOlsiUGF5UGFsOlc4RUs2M0pLTDhBUVUiLCJCcmFpbnRyZWU6cWdkN2p3NzQ5Y20ycnR0NyJdLCJleHAiOjE3NzU1NzUyMDIsImlhdCI6MTc3NTU3NDMwMiwianRpIjoiVTJBQUlDZFRYZmpXamh6Tl92NjhHNHpUdzQ0a2VqV0luOTlpMkxHOXJIY2lhRS1tY3dCM2VFeXh4MzR1UnZzSjZ5YWpwaENhOG4wVVNZazg2cW9zcW9vc0VLWVB5bFhzWVcwMmJvckd5aHp4eUpRYTZxVVBKSkZyXzBPWE00U0EiLCJjbGllbnRfaWQiOiJBUW9HRjZnelFZVVBCMlJVa0xSQ1NnbDQzYnpvdjd2SHRtdFJLSXVYOXd4cXZYNmYyemY5RWtZTl85OUc2XzVVSTVzalNoVmhMNk1DdWJPcSJ9.8yXOJ4N3gpLs7ma7-5-wbt7ckdX1FZHeXtjMxINlJTCnLQJExkIn3EhIDUx43SqYg_5gUW1sgA3o6qX_lzN8lw"; 
+                console.log({ clientToken })
+    const sdkInstance = await window.paypal.createInstance({
+                clientToken,
+                components: [
+                  "paypal-payments",
+                  "card-fields",
+                  "paypal-messages",
+                  "paypal-guest-payments"
+                  ],
+                pageType: "checkout",
+                partnerAttributionId: "PS_SALES_DE_SANDBOX"
+              });
+              console.log("SDK initialized successfully:", sdkInstance);
+
+
+
+  //eligbility
+
+    const paymentMethods = await sdkInstance.findEligibleMethods({
+                currencyCode: "EUR",
+              });
+
+              // console.log(JSON.stringify(paymentMethods));
+              // console.log(paymentMethods);
+
+
+              //is this the correct one for ACDC? 
+              if (paymentMethods.isEligible("advanced_cards")) {
+              setupCardFields(sdkInstance);
+              }
+
+              if (paymentMethods.isEligible("paylater")) {
+                const paylaterPaymentMethodDetails =
+                  paymentMethods.getDetails("paylater");
+                setupPayLaterButton(sdkInstance, paylaterPaymentMethodDetails);
+              }
+              if (paymentMethods.isEligible("paypal")) {
+                setupPayPalButton(sdkInstance);
+                setupPayPalXOButton(sdkInstance);
+                setupPayPalVaultButton(sdkInstance);
+                setupVaultButton(sdkInstance);
+
+              }
+
+              //Messaging
+
+              sdkInstance.createPayPalMessages();
+              addAmountEventListener();
+              
+              
+              const paypalGuestPaymentSession =
+              await sdkInstance.createPayPalGuestOneTimePaymentSession({
+                onApprove,
+                onCancel,
+                onComplete,
+                onError,
+              });
+
+              const checkoutButton = document.getElementById("paypal-basic-card-button");
+
+              // start checkout immediately on script load
+              // startGuestPaymentSession(checkoutButton, paypalGuestPaymentSession);
+
+              // also setup the button to start checkout on click
+              setupGuestPaymentButton(checkoutButton, paypalGuestPaymentSession);
+
+
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+
+
+//Guest Card
+
+
+// Setup Guest Payment
+      async function startGuestPaymentSession(
+        checkoutButton,
+        paypalGuestPaymentSession,
+      ) {
+        try {
+          const startOptions = {
+            targetElement: checkoutButton,
+            presentationMode: "auto",
+            billing_country: "DE"
+          };
+          // get the promise reference by invoking createOrder()
+          // do not await this async function since it can cause transient activation issues
+          const createOrderPromise = createOrder();
+          await paypalGuestPaymentSession.start(startOptions, createOrderPromise);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+      
+
+        async function setupGuestPaymentButton(
+          checkoutButton,
+          paypalGuestPaymentSession,
+        ) {
+          checkoutButton.addEventListener("click", onClick);
+
+          async function onClick() {
+            startGuestPaymentSession(checkoutButton, paypalGuestPaymentSession);
+          }
+        }
+
+        async function onApprove(data) {
+          console.log("onApprove", data);
+          const orderData = await captureOrder({
+            orderId: data.orderId,
+          });
+          console.log("Capture result", orderData);
+              var redirectURL = "lookup.php?token=" + data.orderId;
+              return window.location.replace(redirectURL);
+        }
+
+        function onCancel(data) {
+          console.log("onCancel", data);
+        }
+
+        function onComplete(data) {
+          console.log("onComplete", data);
+        }
+
+        function onError(data) {
+          console.log("onError", data);
+        }
+
+
+
+
+
+// Setting up Card Form
+
+      async function setupCardFields(sdkInstance) {
+        const cardFieldsInstance =
+          sdkInstance.createCardFieldsOneTimePaymentSession();
+
+        const numberField = cardFieldsInstance.createCardFieldsComponent({
+          type: "number",
+          placeholder: "Enter a number:",
+          ariaDescription: "card-number-field",
+          ariaLabel: "some-values",
+          style: {
+            input: {
+              color: "#195a94",
+            },
+          },
+          // SDK to take care of aria-invalid when the value is invalid on Change
+        });
+        const cvvField = cardFieldsInstance.createCardFieldsComponent({
+          type: "cvv",
+          placeholder: "Enter CVV:",
+          style: {
+            input: {
+              color: "#195a94",
+            },
+          },
+
+
+        });
+        const expiryField = cardFieldsInstance.createCardFieldsComponent({
+          type: "expiry",
+          placeholder: "Enter Expiry:",
+          style: {
+            input: {
+              color: "#195a94",
+            },
+          },
+        });
+
+        document.querySelector("#paypal-card-fields-number").appendChild(numberField);
+        document.querySelector("#paypal-card-fields-expiry").appendChild(expiryField);
+        document.querySelector("#paypal-card-fields-cvv").appendChild(cvvField);
+
+        const payButton = document.querySelector("#pay-button");
+        payButton.addEventListener("click", async () => {
+          try {
+            const orderId = await createCardOrder();    //fix this bit its an object!
+            
+            const { data, state } = await cardFieldsInstance.submit(orderId, {
+              billingAddress: {
+                postalCode: "95131",
+              },
+            });
+
+
+
+            switch (state) {
+              case "succeeded": {
+                const { orderId, ...liabilityShift } = data;
+                console.log(liabilityShift);
+                console.log(data);
+
+
+                //3DS serverSide Lookup
+
+                const threeDSResult = await ThreeDS({ id: orderId });
+                console.log("3DS result:", threeDSResult);
+
+                //Capture
+                const orderData = await captureCardOrder({
+                    id: orderId,
+                });
+                console.log("Capture result:", orderData);
+              var redirectURL = "lookup.php?token=" + orderId;
+              return window.location.replace(redirectURL);
+                break;
+              }
+              case "canceled": {
+                // specifically for if buyer cancels 3DS modal
+                const { orderId } = data;
+                console.log(data);
+              }
+              case "failed": {
+                const { orderId, message } = data;
+                console.log(data);
+              }
+            }
+          } catch (error) {
+            console.error(error);
+          }
+        });
+      }
+
+
+
+
+
+// Setting Up Card Helper Functions
+
+        //createCardOrder
+
+        async function createCardOrder() {
+              const response = await fetch("createCardOrder.php");
+              const { id } = await response.json();
+                // console.log(createCardOrder)
+                console.log("orderId:" + id)
+              return id;
+              
+          }
+
+
+      //GET Card Processor Response
+        async function ThreeDS({ id }) {
+          const response = await fetch(
+              "getProcessorResponse.php?id=" + id,
+              {
+                method: "POST"
+              }
+            );
+            const data = await response.json();
+            console.log(data)
+            return data;
+        }
+
+
+        // Capture Card Order
+        async function captureCardOrder({ id }) {
+          const response = await fetch(
+            // `/paypal-api/checkout/orders/${orderId}/capture`,
+            "captureOrder.php?id=" + id
+          );
+          const data = await response.json();
+
+          return data;
+        }
+
+
+
+
+
+
+
+
+//Setting up functions for the payment session
+
+
+
+
+        //createOrder
+        async function createOrder() {
+            const response = await fetch("createOrder.php");
+            // const data = await response.json();
+            // console.log("createOrder CALLED, got data:", data, "Returning:", data.id, "type:", typeof data.id);
+            // return data.id;
+              const { id } = await response.json();
+                console.log(id)
+              return { orderId: id };
+          }
+
+        //createOrder
+        async function createOrderXO() {
+            const response = await fetch("createOrderXO.php");
+            // const data = await response.json();
+            // console.log("createOrder CALLED, got data:", data, "Returning:", data.id, "type:", typeof data.id);
+            // return data.id;
+              const { id } = await response.json();
+                console.log(id)
+              return { orderId: id };
+          }
+
+        async function createVaultOrder() {
+            const response = await fetch("createOrderVault.php");
+            // const data = await response.json();
+            // console.log("createOrder CALLED, got data:", data, "Returning:", data.id, "type:", typeof data.id);
+            // return data.id;
+              const { id } = await response.json();
+                console.log(id)
+              return { orderId: id };
+          }
+
+        // Capture Order
+        async function captureOrder({ id }) {
+          const response = await fetch(
+            // `/paypal-api/checkout/orders/${orderId}/capture`,
+            "captureOrder.php?id=" + id
+          );
+          const data = await response.json();
+
+          return data;
+        }
+
+
+
+      //Setting up PayPal Button
+      async function setupPayPalButton(sdkInstance) {
+          const paypalPaymentSession = sdkInstance.createPayPalOneTimePaymentSession({
+            // createOrder, //causes no order ID provided
+            onApprove: async function (data) {
+              console.log("onApprove", data);
+              // Log to inspect the data keys
+              // Sometimes PayPal sends { id: ... }, sometimes { orderId: ... }
+              const orderId = data.orderId || data.id;
+              const orderData = await captureOrder({ id: orderId });
+              console.log("Capture result", orderData);
+              var redirectURL = "lookup.php?token=" + orderId;
+              return window.location.replace(redirectURL);
+            },
+            onCancel: function (data) {
+              console.log("onCancel", data);
+            },
+            onError: function (data) {
+              console.log("onError", data);
+            }
+          });
+
+          const paypalButton = document.querySelector("#paypal-button");
+          paypalButton.removeAttribute("hidden");
+
+          paypalButton.addEventListener("click", async () => {
+            try {
+              await paypalPaymentSession.start({
+                presentationMode: "direct-app-switch",
+                   autoRedirect: {
+            enabled: enableAutoRedirect.checked,
+          }}, // popup modal redirect auto
+                createOrder()   //order ID must be a string
+              );
+            } catch (error) {
+              console.error(error);
+            }
+          });
+      }
+
+
+      //Setting up PayPal XO Button
+      async function setupPayPalXOButton(sdkInstance) {
+          const paypalPaymentSession = sdkInstance.createPayPalOneTimePaymentSession({
+            // createOrder, //causes no order ID provided
+            commit: false,
+            onApprove: async function (data) {
+              console.log("onApprove", data);
+              // Log to inspect the data keys
+              // Sometimes PayPal sends { id: ... }, sometimes { orderId: ... }
+              const orderId = data.orderId || data.id;
+              const orderData = await captureOrder({ id: orderId });
+              console.log("Capture result", orderData);
+              var redirectURL = "lookup.php?token=" + orderId;
+              return window.location.replace(redirectURL);
+            },
+            onCancel: function (data) {
+              console.log("onCancel", data);
+            },
+            onError: function (data) {
+              console.log("onError", data);
+            }
+          });
+
+          const paypalButton = document.querySelector("#paypal-XO-button");
+          paypalButton.removeAttribute("hidden");
+
+          paypalButton.addEventListener("click", async () => {
+            try {
+              await paypalPaymentSession.start({
+                presentationMode: "popup" }, // popup modal redirect auto
+                createOrderXO()   //order ID must be a string
+              );
+            } catch (error) {
+              console.error(error);
+            }
+          });
+      }
+
+
+
+
+
+      //Setting up PayPal Subscribe Button
+      async function setupPayPalVaultButton(sdkInstance) {
+
+          const paypalPaymentSession = sdkInstance.createPayPalOneTimePaymentSession({
+            // createOrder, //causes no order ID provided
+            onApprove: async function (data) {
+              console.log("onApprove", data);
+              // Log to inspect the data keys
+              // Sometimes PayPal sends { id: ... }, sometimes { orderId: ... }
+              const orderId = data.orderId || data.id;
+              const orderData = await captureOrder({ id: orderId });
+              console.log("Capture result", orderData);
+              var redirectURL = "lookup.php?token=" + orderId;
+              return window.location.replace(redirectURL);
+            },
+            onCancel: function (data) {
+              console.log("onCancel", data);
+            },
+            onError: function (data) {
+              console.log("onError", data);
+            }
+          });
+
+          const paypalButton = document.querySelector("#paypal-subscribe");
+          paypalButton.removeAttribute("hidden");
+
+          paypalButton.addEventListener("click", async () => {
+            try {
+              await paypalPaymentSession.start({
+                presentationMode: "auto" }, // popup modal redirect auto
+                createVaultOrder()   //order ID must be a string
+              );
+            } catch (error) {
+              console.error(error);
+            }
+          });
+      }
+
+
+
+
+      //Setting up Pay Later Button
+      async function setupPayLaterButton(sdkInstance, paylaterPaymentMethodDetails) {
+      const paylaterPaymentSession =
+        sdkInstance.createPayLaterOneTimePaymentSession(
+          {
+            onApprove: async function (data) {
+              console.log("onApprove", data);
+              // Log to inspect the data keys
+              // Sometimes PayPal sends { id: ... }, sometimes { orderId: ... }
+              const orderId = data.orderId || data.id;
+              const orderData = await captureOrder({ id: orderId });
+              console.log("Capture result", orderData);
+              var redirectURL = "lookup.php?token=" + orderId;
+              return window.location.replace(redirectURL);
+            },
+            onCancel: function (data) {
+              console.log("onCancel", data);
+            },
+            onError: function (data) {
+              console.log("onError", data);
+            }
+
+          }
+        );
+
+      const { productCode, countryCode } = paylaterPaymentMethodDetails;
+      const paylaterButton = document.querySelector("#paylater-button");
+
+      paylaterButton.productCode = productCode;
+      paylaterButton.countryCode = countryCode;
+      paylaterButton.removeAttribute("hidden");
+
+      paylaterButton.addEventListener("click", async () => {
+        try {
+          await paylaterPaymentSession.start(
+            { presentationMode: "auto" },
+            createOrder(),
+          );
+        } catch (error) {
+          console.error(error);
+        }
+      });
+    }
+
+
+
+// basic example Pay Later Messaging interaction
+        function addAmountEventListener() {
+        const messageElement = document.querySelector("#paypal-message");
+        const quantityInput = document.querySelector("#quantity-input");
+        const totalAmount = document.querySelector("#total-amount");
+        const quantity = document.querySelector("#quantity");
+
+        quantityInput.addEventListener("input", (event) => {
+            const quantityValue = event.target.value;
+            const calculatedTotalAmount = (50 * quantityValue).toFixed(2).toString();
+
+            quantity.innerHTML = quantityValue;
+            totalAmount.innerHTML = calculatedTotalAmount;
+
+            messageElement.amount = calculatedTotalAmount;
+  });
+}
+
+
+
+
+
+//Setting up functions for the payment session
+
+        const paymentSessionOptions = {
+          // Called when customer approves saving their payment method
+          async onApprove(data) {
+            console.log("Save payment approved:", data);
+            
+        const createPaymentTokenResponse = await createPaymentToken(
+                  data.vaultSetupToken,
+                );
+                console.log("Create payment token response: ", createPaymentTokenResponse);
+              },
+              onCancel(data) {
+                console.log("onCancel", data);
+              },
+              onError(error) {
+                console.log("onError", error);
+              },
+    };
+
+// Set Up Button
+
+async function setupVaultButton(sdkInstance) {
+  const paypalPaymentSession = sdkInstance.createPayPalSavePaymentSession(
+    paymentSessionOptions,
+  );
+
+  // Get reference to PayPal button
+  const paypalButton = document.querySelector("#paypal-vault");
+  paypalButton.removeAttribute("hidden");
+
+  // Add click handler to start save payment flow
+  paypalButton.addEventListener("click", async () => {
+    try {
+      // get the promise reference by invoking createVaultSetupToken()
+      // do not await this async function since it can cause transient activation issues
+      const createVaultSetupTokenPromise = createVaultSetupToken();
+      await paypalPaymentSession.start(
+        { presentationMode: "auto" },
+        createVaultSetupTokenPromise,
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  });
+}
+
+//Backend 
+
+// POST /paypal-api/vault/setup-token/create
+async function createVaultSetupToken() { 
+    const response = await fetch("createSetupToken.php", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+    });
+  
+    
+    const { id } = await response.json();
+
+      console.log("return to SDK:", id);
+      // console.log("Full response from createSetupToken.php:", response);
+    return { vaultSetupToken: id };
+}
+
+// POST /paypal-api/vault/payment-token/create
+        async function createPaymentToken(vaultSetupToken) 
+          {
+            const response = await fetch("createPaymentToken.php", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({ vaultSetupToken }),
+                });
+                const data = await response.json();
+          
+          return data;
+        }
+
+</script>
+
+
+
+
+
+
+
+
