@@ -128,10 +128,10 @@
 
 async function onPayPalWebSdkLoaded() {
   try {
-    const clientToken = "ASrzVoi6pQW2JCGpkiGGFWK7stkzlHRGW9xyuEYbzenGEkK4nyZ5P9KY-tdKNRIvOODv5DM7iTPMYcKm"; 
-                console.log({ clientToken })
+    const clientId = "ASrzVoi6pQW2JCGpkiGGFWK7stkzlHRGW9xyuEYbzenGEkK4nyZ5P9KY-tdKNRIvOODv5DM7iTPMYcKm"; 
+                console.log({ clientId })
     const sdkInstance = await window.paypal.createInstance({
-                clientToken,
+                clientId,
                 components: [
                   "paypal-payments",
                   "card-fields",
