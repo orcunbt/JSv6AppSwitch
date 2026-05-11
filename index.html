@@ -128,10 +128,10 @@
 
 async function onPayPalWebSdkLoaded() {
   try {
-    const clientId = "ASrzVoi6pQW2JCGpkiGGFWK7stkzlHRGW9xyuEYbzenGEkK4nyZ5P9KY-tdKNRIvOODv5DM7iTPMYcKm"; 
-                console.log({ clientId })
+    const clientToken = "eyJraWQiOiJjMDg0YjA0NDQwMjE0YzFkYTQ1ZDgwNDE1YjJlZmI5MiIsInR5cCI6IkpXVCIsImFsZyI6IkVTMjU2In0.eyJpc3MiOiJodHRwczovL2FwaS5zYW5kYm94LnBheXBhbC5jb20iLCJhdWQiOlsiaHR0cHM6Ly9hcGkuYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJvcmN1bmJ0LmdpdGh1Yi5pbyJdLCJzdWIiOiJGWVZETVlXUDc3R0QyIiwiYWNyIjpbImNsaWVudCJdLCJzY29wZSI6WyJCcmFpbnRyZWU6VmF1bHQiXSwib3B0aW9ucyI6e30sImF6IjoiY2NnMTguc2xjIiwiZXh0ZXJuYWxfaWQiOlsiUGF5UGFsOkZZVkRNWVdQNzdHRDIiLCJCcmFpbnRyZWU6c2dkOXQ1OWoyZDluNjNmOCJdLCJleHAiOjE3Nzg1MDY0MDYsImlhdCI6MTc3ODUwNTUwNiwianRpIjoiVTJBQUtYZ3QySnZXRldtU1NNMS14RGtxekh5QlZWNzNfMl9RQ21adEdwcXdYMTJXZGpCbXZzM1JzNjYtUVM3dnhoZjBubXh0VWQtb0FFTGJQZVlQWW1fUFJNTXl4RndidllBN1ZMLW1WelJWdHV6QkFWMmdmbEdPRHE0T253N3ciLCJjbGllbnRfaWQiOiJBU3J6Vm9pNnBRVzJKQ0dwa2lHR0ZXSzdzdGt6bEhSR1c5eHl1RVliemVuR0VrSzRueVo1UDlLWS10ZEtOUkl2T09EdjVETTdpVFBNWWNLbSJ9.R9nBI2N5CkD5Lx8XjrH8zarWsyHD48KqYtFCJzB_S4feAzg31BiBuFgMf_znLt9ea7XNiFW_LSf8y4k-i9qIFA"; 
+                console.log({ clientToken })
     const sdkInstance = await window.paypal.createInstance({
-                clientId,
+                clientToken,
                 components: [
                   "paypal-payments",
                   "card-fields",
